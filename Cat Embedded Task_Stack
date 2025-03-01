@@ -1,0 +1,141 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 5
+//Static Stack Implementation
+typedef struct {
+    int data[MAX_SIZE];
+    int top;
+} StaticStack;
+void initStaticStack(StaticStack *s) {
+    s->top = -1;
+}
+int isStaticFull(StaticStack *s) {
+    return s->top == MAX_SIZE - 1;
+}
+int isStaticEmpty(StaticStack *s) {
+    return s->top == -1;
+}
+void staticPush(StaticStack *s, int value) {
+    if (isStaticFull(s)) {
+        printf("Static Stack Overflow!\n");
+        return;
+    }
+    s->data[++s->top] = value;
+}
+int staticPop(StaticStack *s) {
+    if (isStaticEmpty(s)) {
+        printf("Static Stack Underflow!\n");
+        return -1;
+    }
+    return s->data[s->top--];
+}
+void displayStatic(StaticStack *s) {
+    if (isStaticEmpty(s)) {
+        printf("Static Stack is empty!\n");
+        return;
+    }
+    printf("Static Stack: ");
+    for (int i = s->top; i >= 0; i--) {
+        printf("%d ", s->data[i]);
+    }
+    printf("\n");
+}
+//Dynamic Stack Implementation
+typedef struct dynamic {
+    int data;
+    struct dynamic *next;
+} dynamic;
+typedef struct {
+    dynamic *top;
+} DynamicStack;
+void initDynamicStack(DynamicStack *ds) {
+    ds->top = NULL;
+}
+int isDynamicEmpty(DynamicStack *ds) {
+    return ds->top == NULL;
+}
+void dynamicPush(DynamicStack *ds, int value) {
+    dynamic *newdynamic = (dynamic*)malloc(sizeof(dynamic));
+    if (!newdynamic) {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+    newdynamic->data = value;
+    newdynamic->next = ds->top;
+    ds->top = newdynamic;
+}
+int dynamicPop(DynamicStack *ds) {
+    if (isDynamicEmpty(ds)) {
+        printf("Dynamic Stack Underflow!\n");
+        return -1;
+    }
+    dynamic *temp = ds->top;
+    int popped = temp->data;
+    ds->top = ds->top->next;
+    free(temp);
+    return popped;
+}
+void displayDynamic(DynamicStack *ds) {
+    if (isDynamicEmpty(ds)) {
+        printf("Dynamic Stack is empty!\n");
+        return;
+    }
+    dynamic *current = ds->top;
+    printf("Dynamic Stack: ");
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    StaticStack s;
+    DynamicStack ds;
+    initStaticStack(&s);
+    initDynamicStack(&ds);
+    int choice, stackType, value;
+    while (1) {
+        printf("\n1. Use Static Stack\n2. Use Dynamic Stack\n3. Exit\n");
+        printf("Choose stack type: ");
+        scanf("%d", &stackType);
+        if (stackType == 3) break;
+
+        while (1) {
+            if (stackType == 1) {
+                printf("\nStatic Stack Operations:\n");
+                printf("1. Push\n2. Pop\n3. Display\n4. Back\n");
+            } else if (stackType == 2) {
+                printf("\nDynamic Stack Operations:\n");
+                printf("1. Push\n2. Pop\n3. Display\n4. Back\n");
+            } else {
+                break;
+            }
+
+            printf("Enter choice: ");
+            scanf("%d", &choice);
+
+            if (choice == 4) break;
+
+            switch (choice) {
+                case 1:
+                    printf("Enter value: ");
+                    scanf("%d", &value);
+                    if (stackType == 1) staticPush(&s, value);
+                    else dynamicPush(&ds, value);
+                    break;
+                case 2:
+                    if (stackType == 1) printf("Popped: %d\n", staticPop(&s));
+                    else printf("Popped: %d\n", dynamicPop(&ds));
+                    break;
+                case 3:
+                    if (stackType == 1) displayStatic(&s);
+                    else displayDynamic(&ds);
+                    break;
+                default:
+                    printf("Invalid choice!\n");
+            }
+        }
+    }
+    return 0;
+}
