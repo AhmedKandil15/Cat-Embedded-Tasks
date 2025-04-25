@@ -1,0 +1,3 @@
+D:/Github/Cat-Embedded-Tasks/Sorting Algorithm/Bubble Sort/cmake-build-debug/CMakeFiles/Bubble_Sort.dir
+D:/Github/Cat-Embedded-Tasks/Sorting Algorithm/Bubble Sort/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Github/Cat-Embedded-Tasks/Sorting Algorithm/Bubble Sort/cmake-build-debug/CMakeFiles/rebuild_cache.dir
